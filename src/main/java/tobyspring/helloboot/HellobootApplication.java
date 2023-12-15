@@ -36,10 +36,9 @@ public class HellobootApplication {
             servletContext.addServlet("Dispatcher-Servlet",
                             new DispatcherServlet(applicationContext)
                     ).addMapping("/*");
-                    // 이렇게 디스패쳐 서블릿에 Spring Container를 넘겼다!!!
         });
-        // 에러가 나는게 당연하다. 우린 디스패처 서블릿에게 addMapping을 통해 여청을 처리하도록 했지만, 어떤 빈들을 이용해 어떤 작업을 처리할지를 명시하지 않았음
-        // 초기에는 XML에 다 명시했지만, 매핑정보를 서블릿의 코드로 URI 매핑을 컨트롤러 빈에 집어넣도록 하는 요즘의 방법!!! 가자~
+        //이제 서블릿 컨테이너의 서블릿에 매핑정보를 넣는게 아니라, 스프링 컨테이너에 존재하는 컨트롤러에 매핑정보를 등록해버리자!!
+        // 이를테면 GetMapping, PostMapping 등의 메소드가 존재함 또한
     }
 }
 
