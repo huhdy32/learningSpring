@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.catalina.startup.Tomcat;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
@@ -17,49 +18,28 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.swing.text.AbstractDocument;
 import java.io.IOException;
 
 public class HellobootApplication {
     public static void main(String[] args) {
-        // 스프링 컨테이너를 만들어보자
-        GenericApplicationContext applicationContext = new GenericApplicationContext();
+        GenericWebApplicationContext applicationContext = new GenericWebApplicationContext();
         applicationContext.registerBean(HelloController.class);
         applicationContext.registerBean(SimpleHelloService.class);
         applicationContext.refresh();
-        // 빈 등록
 
-
-
-        // 아무거도 안되는데? 스프링을 실행시켜 보자
-
-        ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
-        WebServer webServer = serverFactory.getWebServer(servletContext -> {
-            servletContext.addServlet("Front Controller", new HttpServlet() {
-                @Override
-                protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                    // 인증, 보안, 다국어, 공통기능 등등 구현
-                    if (req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
-                        String name = req.getParameter("name");
-//                        resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);;
-                        resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
-                        resp.setStatus(HttpStatus.OK.value());
-                        resp.getWriter().println(applicationContext.getBean(HelloController.class).hello(req.getParameter("name")));
-                    }else {
-                        resp.setStatus(HttpStatus.NOT_FOUND.value());
-                        resp.getWriter().println("NOT MATCH");
-                    }
-                }
-            }).addMapping("/*");
+        ServletWebServerFactory webServerFactory = new TomcatServletWebServerFactory();
+        WebServer webServer = webServerFactory.getWebServer(servletContext -> {
+            servletContext.addServlet("Dispatcher-Servlet",
+                            new DispatcherServlet(applicationContext)
+                    ).addMapping("/*");
+                    // 이렇게 디스패쳐 서블릿에 Spring Container를 넘겼다!!!
         });
-        // 요놈을 이용해서 서블릿컨텍스트를 넣어서 컨테이너를 구성하는구나
-        webServer.start();
-        // 서블릿 컨테이너를 구성했음 레전드노
-
-        // 서블릿은 서블릿 컨테이너에 여러가지가 들어갈수 있음으로,
-        // 따라서 컨테이너는 요청을 적절한 서블렛에 이 요청을 처리하도록 전달함
-
+        // 에러가 나는게 당연하다. 우린 디스패처 서블릿에게 addMapping을 통해 여청을 처리하도록 했지만, 어떤 빈들을 이용해 어떤 작업을 처리할지를 명시하지 않았음
+        // 초기에는 XML에 다 명시했지만, 매핑정보를 서블릿의 코드로 URI 매핑을 컨트롤러 빈에 집어넣도록 하는 요즘의 방법!!! 가자~
     }
 }
 
