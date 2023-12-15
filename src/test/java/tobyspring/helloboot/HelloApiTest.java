@@ -35,5 +35,33 @@ public class HelloApiTest {
         // body
         assertThat(response.getBody()).isEqualTo("Hello Spring");
 
+
     }
+
+    @Test
+    void failsHelloApi() {
+
+        TestRestTemplate rest = new TestRestTemplate();
+
+        ResponseEntity<String> response =
+                rest.getForEntity("http://localhost:8080/hello?name="
+                        , String.class
+                );
+        // 응답 검증 단계
+        // status Code
+//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        // 일반적인 예외 시, 서블릿 컨테이너는 응답코드 500으로 매칭해서 리턴합니다. 서버에서 뭔가 에외가 발새했다.
+
+
+
+        // header
+//        assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE)).startsWith(MediaType.TEXT_PLAIN.toString());
+
+        // body
+//        assertThat(response.getBody()).isEqualTo("Hello Spring");
+
+
+    }
+
 }
