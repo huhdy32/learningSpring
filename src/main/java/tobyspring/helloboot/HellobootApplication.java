@@ -7,6 +7,7 @@ import org.springframework.cglib.proxy.Dispatcher;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 public class HellobootApplication {
     public static void main(String[] args) {
         // 지금 까지 쓰던 요놈은 자바코드로 작성된 Configuration 코드를 읽을 수 없음 따라서 수정
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext() {
+        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext() {
             @Override
             protected void onRefresh() {
                 super.onRefresh();
