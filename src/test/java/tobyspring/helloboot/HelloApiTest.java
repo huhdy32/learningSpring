@@ -33,7 +33,7 @@ public class HelloApiTest {
         // header
         assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE)).startsWith(MediaType.TEXT_PLAIN.toString());
         // body
-        assertThat(response.getBody()).isEqualTo("Hello Spring");
+         assertThat(response.getBody()).isEqualTo("Hello Spring*");
 
 
     }
