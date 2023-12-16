@@ -11,19 +11,11 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 
-@Configuration
-@ComponentScan
+
+//@Configuration
+//@ComponentScan
+@MySpringBootApplication
 public class HellobootApplication {
-    @Bean
-    public ServletWebServerFactory servletWebServerFactory() {
-        System.out.println("WEBSERVER 등록");
-        return new TomcatServletWebServerFactory();
-    }
-    @Bean
-    public DispatcherServlet dispatcherServlet() {
-        System.out.println("DISPATCHER 등록");
-        return new DispatcherServlet();
-    }
     public static void main(String... args) {
 //        MySpringApplication.run(HellobootApplication.class, args);
         SpringApplication.run(HellobootApplication.class, args);
