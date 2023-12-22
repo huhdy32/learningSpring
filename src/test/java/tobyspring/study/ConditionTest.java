@@ -28,7 +28,7 @@ public class ConditionTest {
                     assertThat(context).doesNotHaveBean(MyBean.class);
                     assertThat(context).doesNotHaveBean(Config2.class);
                 });
-        
+
 /*
 
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
