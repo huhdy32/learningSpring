@@ -12,7 +12,12 @@ import tobyspring.config.MyAutoConfiguration;
 public class JettyWebServerConfig {
     @Bean("JettyWebServerFactory")
     @ConditionalOnMissingBean
-    public ServletWebServerFactory jettyServletWebServerFactory() {
-        return new JettyServletWebServerFactory();
+    public ServletWebServerFactory jettyServletWebServerFactory(ServerProperties serverProperties) {
+
+        JettyServletWebServerFactory factory = new JettyServletWebServerFactory();
+        factory.setContextPath(serverProperties.getContextPath());
+        factory.setPort(serverProperties.getPort());
+        return factory;
+
     }
 }
