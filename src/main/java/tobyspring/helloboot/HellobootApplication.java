@@ -1,17 +1,39 @@
 package tobyspring.helloboot;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import tobyspring.config.MySpringBootApplication;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import tobyspring.config.MySpringBootApplication;
 
-
-//@Configuration
-//@ComponentScan
 @MySpringBootApplication
 public class HellobootApplication {
+    @Bean
+    // 컨테이너의 기능을 활요해서 테스트하고싶은 경우 유용함 기억하는게 좋아
+    ApplicationRunner applicationRunner(Environment environment) {
+        return args -> {
+            String property = environment.getProperty("my.name");
+            System.out.println("my.name : " + property);
+        };
+    }
+    @Bean
+    TazerGun provideTazer() {
+        TazerGun tazerGun = new TazerGun();
+        System.out.println(tazerGun.getName());
+        return tazerGun;
+    }
+
+    public static class TazerGun {
+        private String name = "정상수";
+
+        public String getName() {
+            return name;
+        }
+    }
     public static void main(String... args) {
-//        MySpringApplication.run(HellobootApplication.class, args);
         SpringApplication.run(HellobootApplication.class, args);
     }
+
 }
 
