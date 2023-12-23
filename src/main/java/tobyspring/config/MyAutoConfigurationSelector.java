@@ -4,10 +4,8 @@ import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 public class MyAutoConfigurationSelector implements DeferredImportSelector {
     private ClassLoader classLoader;
