@@ -19,6 +19,7 @@ import java.sql.Driver;
 @ConditionalMyOnClass("org.springframework.jdbc.core.JdbcOperations")
 @EnableMyConfigurationProperties(MyDataSourceProperties.class)
 @EnableTransactionManagement
+// 구성정보를 가지는 클래스를 Import 해서 빈으로 등록하게 된다.
 public class DataSourceConfig {
     @Bean
     @ConditionalMyOnClass("com.zaxxer.hikari.HikariDataSource")
@@ -54,10 +55,13 @@ public class DataSourceConfig {
     JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
+
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnSingleCandidate(DataSource.class)
     JdbcTransactionManager jdbcTransactionManager(DataSource dataSource) {
         return new JdbcTransactionManager(dataSource);
+        // 직접 이 빈을 주입받아 사용하기 보다는...
+        // 보통 @Transactional 어노테이션을 통해 이 빈 객체를 사용하게 되낟. ( AOP 적용 )
     }
 }
